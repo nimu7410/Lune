@@ -1,0 +1,32 @@
+venv
+test.ipynb
+Lune.exe
+logs
+
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Broker session state (contains a live access token).
+#
+# As of 2026-08-18 none of this is written here any more - it lives in
+# %ProgramData%\neobot (see broker_secrets._default_state_dir), outside the source
+# tree entirely. These entries stay as a backstop: if a future change or an old
+# build ever puts state back beside the source, it must still not be committed.
+# `.state/` is the non-Windows fallback location.
+.state/
+access_token.txt
+.shoonya_session.json
+.shoonya_session.lock
+.shoonya_login_cooldown.json
+
+# Broker credentials, encrypted against this host's systemd key (see
+# broker_secrets.py). Useless elsewhere, but credential material all the same.
+secrets/
+
+# Local backups (was "backup", which never matched the real "backups" folder)
+backup
+backups
+__pycache__/
+*.pyc

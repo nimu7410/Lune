@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070707">
+  <meta name="color-scheme" content="dark">
+  <title>Lune · Tick backtester</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070707'/%3E%3Cpath d='M9 7v18h15' fill='none' stroke='%23ffb45c' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="preload" href="/lune/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/lune/Lune-v5.css">
+  <link rel="stylesheet" href="/lune/manual.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bt.css') }}">
+  <script defer src="{{ url_for('static', filename='bt.js') }}"></script>
+</head>
+<body data-indices="{{ indices|join(',') }}">
+<a class="skip" href="#plot">Skip to tick chart</a>
+
+<header class="head">
+  <a class="brand" href="/" aria-label="Lune backtester home">
+    <i aria-hidden="true"></i>
+    <span class="brand-word">LUNE</span>
+    <span class="brand-sub">TICK<br>BACKTESTER</span>
+  </a>
+
+  <div class="picker" id="indexPicker" role="group" aria-label="Charted index">
+    {%- for name in indices %}
+    <button type="button" class="picker-chip" data-index="{{ name }}" aria-pressed="false">{{ name }}</button>
+    {%- endfor %}
+  </div>
+
+  <div class="signals">
+    <span class="pod" id="dataPod" data-state="connecting" role="status"><i class="beacon" aria-hidden="true"></i><b id="dataLabel">Loading</b></span>
+    <div class="ui-switch" role="group" aria-label="Tick data">
+      <button type="button" id="syncButton" title="Copy every finished session from Lune's database">SYNC</button>
+    </div>
+    <button type="button" class="gear" id="settingsOpen" aria-label="Pivot settings per index" title="Pivot settings per index">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.8 1.17V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-2.8-1.17l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0-1.17-2.8H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.17-2.8l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 2.8-1.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 2.8 1.17l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0 1.17 2.8H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="workspace">
+  <section class="desk" id="desk" aria-label="Session replay">
+    <div class="quote desk-quote">
+      <div class="instrument">
+        <span class="kicker"><i></i> REPLAY / <b id="deskDay">—</b></span>
+        <h1 id="deskIndex">—</h1>
+      </div>
+      <div class="last-price">
+        <span class="label">Session net · this index</span>
+        <strong class="figure tnum"><span id="dayNet">—</span><span class="paise" id="dayNetUnit"></span></strong>
+        <p class="price-meta"><span id="dayMeta" class="flat">Waiting for the replay</span><span id="dayPivots" class="dim">—</span><span id="dayLegs" class="dim" title="Leg: pivot to pivot. Confirmed in: from a pivot's own tick to the tick that printed it.">—</span></p>
+      </div>
+      <div class="desk-hold" id="runHold" data-side="flat">
+        <span class="range-title">Backtest net · <span id="runScope">not run yet</span></span>
+        <b class="desk-side tnum" id="runNet">—</b>
+        <span class="desk-hold-line tnum" id="runLine">Press RUN to backtest every session</span>
+        <strong class="desk-open tnum" id="runFill">—</strong>
+      </div>
+    </div>
+
+    <div class="desk-grid">
+      <div class="desk-chart">
+        <div class="chart-title">
+          <div class="desk-frames bt-days" id="dayPicker" role="group" aria-label="Session"></div>
+        </div>
+        <div class="chart-title">
+          <div class="desk-frames" id="deskFrames" role="group" aria-label="Chart mode">
+            <button type="button" data-frame="tick" aria-pressed="true" title="Every tick">TICK</button>
+            <button type="button" data-frame="1" aria-pressed="false">1M</button>
+            <button type="button" data-frame="5" aria-pressed="false">5M</button>
+            <button type="button" data-frame="15" aria-pressed="false">15M</button>
+          </div>
+          <div class="desk-frames desk-windows" id="deskWindows" role="group" aria-label="Tick chart window">
+            <button type="button" data-window="5" aria-pressed="false">5M</button>
+            <button type="button" data-window="15" aria-pressed="false">15M</button>
+            <button type="button" data-window="30" aria-pressed="false">30M</button>
+            <button type="button" data-window="60" aria-pressed="false">1H</button>
+            <button type="button" data-window="180" aria-pressed="false">3H</button>
+            <button type="button" data-window="day" aria-pressed="true">DAY</button>
+          </div>
+          <span class="desk-chart-meta tnum" id="deskChartMeta">—</span>
+        </div>
+        <div class="chart-surface desk-surface">
+          <canvas id="plot" tabindex="0" aria-label="Index price by tick, with HH and LL pivots and the needles"></canvas>
+          <div class="veil" id="deskVeil" data-state="waiting" role="status">
+            <span class="loader" aria-hidden="true"><i></i></span>
+            <b>REPLAYING THE SESSION</b>
+            <small>Every stored tick, through the HH/LL engine.</small>
+          </div>
+        </div>
+        <aside class="readout desk-readout" aria-label="Selected point">
+          <span class="candle-time"><small id="deskReadKind">LATEST</small><b id="deskReadAt">—</b></span>
+          <dl>
+            <div><dt>OPEN</dt><dd class="tnum" id="deskO">—</dd></div>
+            <div><dt>HIGH</dt><dd class="tnum" id="deskH">—</dd></div>
+            <div><dt>LOW</dt><dd class="tnum" id="deskL">—</dd></div>
+            <div><dt>CLOSE</dt><dd class="tnum" id="deskC">—</dd></div>
+          </dl>
+          <span class="bar-count" id="deskCount">0 ticks</span>
+        </aside>
+      </div>
+
+      <aside class="ticket" id="ticket" aria-label="Backtest settings">
+        <div class="module-head"><div><span class="module-number">M1</span><span class="kicker">ENGINE SETTINGS</span></div><span class="tag" id="ticketTag" data-desk="unknown">Loading</span></div>
+        <div class="ticket-instrument">
+          <small>HH/LL TICK ENGINE · SYNTHETIC FUTURE</small>
+          <b>Backtest</b>
+          <span class="tnum" id="ticketMeta">—</span>
+        </div>
+        <form id="settingsFormMain" class="bt-form" novalidate>
+          <fieldset><legend>NEEDLE · EXIT WHEN THE MOVE AFTER THE DASH IS OVER</legend>
+            <label><span>RULE</span><select name="needle">
+              <option value="off">Off</option>
+              <option value="giveback" title="Once the move from the dash reaches ARM x R, exit when it gives back GIVE BACK of its best move">Give back part</option>
+              <option value="entry" title="Once the move from the dash reaches ARM x R, exit only if price comes back to the dash (entry); else it runs to the next pivot">Back to entry</option>
+              <option value="stall" title="Once the move from the dash reaches ARM x R, exit when it has given back GIVE BACK of its best move AND made no new extreme for WAIT seconds">Give back + stall</option>
+            </select></label>
+            <label><span>ARM · × R</span><input name="needle_arm" type="number" min="0" max="50" step="0.25" title="The move from the dash, x R, before the needle can end"></label>
+            <label><span>GIVE BACK · SHARE</span><input name="needle_give" type="number" min="0.01" max="1" step="0.05" title="Give back part / + stall: the share of the best move given back that ends the needle (0.5 = half)"></label>
+            <label><span>WAIT · S</span><input name="needle_wait_s" type="number" min="0" max="21600" step="60" title="Give back + stall: seconds without a new extreme before the needle can end"></label>
+          </fieldset>
+          <fieldset><legend>EXECUTION</legend>
+            <label><span>FILL</span><select name="fill"><option value="next" title="No lookahead: fills on a later tick">Next tick</option><option value="same" title="Fills on the deciding tick, as Lune's paper book">Same tick</option></select></label>
+            <label><span>LATENCY · MS</span><input name="latency_ms" type="number" min="0" max="60000" step="50"></label>
+            <label><span>LOTS</span><input name="lots" type="number" min="1" max="50" step="1"></label>
+            <label><span>ENTRY ORDER</span><select name="order"><option value="market">Market</option><option value="limit">Limit</option></select></label>
+            <label><span>LIMIT WAIT · S</span><input name="limit_wait" type="number" min="0.1" step="1"></label>
+            <label><span>LAST ENTRY</span><input name="last_entry" type="text" inputmode="numeric" pattern="[0-9]{2}:[0-9]{2}" maxlength="5" placeholder="HH:MM" title="No new entries from this time; 15:00 at the latest. Every trade is closed at 15:10."></label>
+          </fieldset>
+          <fieldset><legend>ENTRY FILTERS · × R</legend>
+            <label><span>LEG INTO PIVOT</span><input name="leg_k" type="number" min="0" step="0.25" title="0 = off"></label>
+            <label><span>CHOP (MEDIAN LEG)</span><input name="chop_k" type="number" min="0" step="0.25" title="0 = off"></label>
+          </fieldset>
+          <fieldset><legend>EXITS · × R</legend>
+            <label><span>EXIT ON</span><select name="exit_on"><option value="pivot" title="Any opposite pivot closes">Any pivot</option><option value="signal" title="Only an opposite pivot the entry filters pass closes">Tradable pivot</option></select></label>
+            <label><span>WIDE ZIGZAG</span><input name="exit_wide" type="number" min="0" step="0.5" title="0 = off"></label>
+            <label><span>STOP</span><input name="stop" type="number" min="0" step="0.25" title="0 = off"></label>
+            <label><span>TARGET</span><input name="target" type="number" min="0" step="0.25" title="0 = off"></label>
+            <label><span>LOCK AT</span><input name="lock_at" type="number" min="0" step="0.25" title="0 = off"></label>
+            <label><span>LOCK TRAIL</span><input name="lock_trail" type="number" min="0.01" step="0.25"></label>
+            <label><span>MAX HOLD · S</span><input name="max_hold_s" type="number" min="0" step="60" title="0 = off"></label>
+          </fieldset>
+        </form>
+        <dl class="ticket-legs" id="pivotSummary" aria-label="Pivot settings of the charted index"></dl>
+        <div class="ticket-actions">
+          <button type="button" class="trade trade--buy" id="runButton"><b>RUN</b><small>Every session in range</small></button>
+          <button type="button" class="trade trade--exit" id="liveButton"><b>LIVE</b><small>Lune's settings now</small></button>
+          <button type="button" class="trade trade--sell" id="pivotsButton"><b>PIVOTS</b><small>Per index</small></button>
+        </div>
+        <p class="ticket-status" id="ticketStatus" role="status" aria-live="polite">Loading the tick data</p>
+        <p class="dim ticket-note">0 turns a filter or exit off. R, threshold and minimum leg are multiples of each index's own all-in cost. Opens on scaled legs with the leg filter at 2 (PIVOTS → Scaled legs); LIVE loads Lune's own settings.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="performance blotter" id="results" aria-labelledby="resultsTitle">
+    <div class="performance-intro">
+      <span class="section-index">05 / RESULTS</span>
+      <h2 id="resultsTitle">Backtest<br>ledger</h2>
+      <p>Every session replayed tick by tick from a fresh book. Every figure is net of brokerage, STT, exchange, SEBI, stamp, GST and modelled spread and slippage. Four option orders per round trip.</p>
+    </div>
+    <div class="performance-body">
+      <form id="rangeForm" class="pnl-filters">
+        <label><span>FROM</span><select id="fromDay" name="from"></select></label>
+        <label><span>TO</span><select id="toDay" name="to"></select></label>
+        <label class="symbol-filter"><span>SYMBOL</span><select id="runIndex" name="index"><option value="">All six indices</option>{% for name in indices %}<option value="{{ name }}">{{ name }}</option>{% endfor %}</select></label>
+        <label><span>ENGINE</span><select disabled><option>HH/LL tick</option></select></label>
+        <button class="apply-button" type="submit">RUN <span aria-hidden="true">→</span></button>
+      </form>
+      <p id="runStatus" class="performance-status" role="status" aria-live="polite">Not run yet.</p>
+      <div id="runResults" hidden>
+        <div class="pnl-stats blotter-stats bt-stats">
+          <div><span class="kicker">NET ₹</span><strong id="sNet" class="tnum">—</strong><small>AFTER ALL COSTS</small></div>
+          <div><span class="kicker">TRADES</span><strong id="sTrades" class="tnum">—</strong><small id="sWins">—</small></div>
+          <div><span class="kicker">PROFIT FACTOR</span><strong id="sPf" class="tnum">—</strong><small>WON ₹ / LOST ₹</small></div>
+          <div><span class="kicker">MAX DRAWDOWN ₹</span><strong id="sDd" class="tnum">—</strong><small>CLOSED TRADES, IN EXIT ORDER</small></div>
+          <div><span class="kicker">GROSS ₹</span><strong id="sGross" class="tnum">—</strong><small>AFTER SPREAD + SLIPPAGE</small></div>
+          <div><span class="kicker">CHARGES ₹</span><strong id="sCharges" class="tnum">—</strong><small>ALL ROUND TRIPS</small></div>
+          <div><span class="kicker">AVG / TRADE ₹</span><strong id="sAvg" class="tnum">—</strong><small>NET</small></div>
+          <div><span class="kicker">HALVES ₹</span><strong id="sHalves" class="tnum">—</strong><small>FIRST / SECOND HALF OF THE DAYS</small></div>
+        </div>
+        <div class="breakdowns bt-breakdowns">
+          <section><h3>DAILY RETURN <span>SESSION / IST</span></h3><div class="ledger-scroll" tabindex="0"><table><thead><tr><th scope="col">DATE</th><th scope="col">TRADES</th><th scope="col">NET ₹</th></tr></thead><tbody id="dailyRows"></tbody></table></div></section>
+          <section><h3>SYMBOL RETURN <span>CLOSED TRADES</span></h3><div class="ledger-scroll" tabindex="0"><table><thead><tr><th scope="col">SYMBOL</th><th scope="col">TRADES</th><th scope="col">NET ₹</th></tr></thead><tbody id="symbolRows"></tbody></table></div></section>
+          <section><h3>EXIT REASON <span>CLOSED TRADES</span></h3><div class="ledger-scroll" tabindex="0"><table><thead><tr><th scope="col">REASON</th><th scope="col">TRADES</th><th scope="col">NET ₹</th></tr></thead><tbody id="reasonRows"></tbody></table></div></section>
+        </div>
+        <div class="ledger-scroll blotter-scroll bt-trades" tabindex="0" aria-label="Every trade; select one to see it on the chart">
+          <table>
+            <thead><tr><th scope="col">DAY</th><th scope="col">INDEX</th><th scope="col">SIDE</th><th scope="col">IN</th><th scope="col">OUT</th><th scope="col">IN PX</th><th scope="col">OUT PX</th><th scope="col">EXIT</th><th scope="col">GROSS PTS</th><th scope="col">CHARGES</th><th scope="col">NET ₹</th></tr></thead>
+            <tbody id="tradeRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="performance" id="tune" aria-labelledby="tuneTitle">
+    <div class="performance-intro">
+      <span class="section-index">06 / TUNE</span>
+      <h2 id="tuneTitle">Walk-forward<br>tuner</h2>
+      <p>Every combination of one or two settings is replayed on every session in range. Out of sample: each session is traded on the combination that made the most on the sessions before it only. The best total over all sessions is hindsight, and shown as such.</p>
+    </div>
+    <div class="performance-body">
+      <form id="tuneForm" class="pnl-filters bt-tune-form">
+        <label><span>INDEX</span><select id="tuneIndex"><option value="">All six (trade rules only)</option>{% for name in indices %}<option value="{{ name }}">{{ name }}</option>{% endfor %}</select></label>
+        <label><span>SETTING 1</span><select id="tuneKey1"></select></label>
+        <label class="bt-wide"><span>VALUES 1</span><input id="tuneVals1" type="text" inputmode="decimal" autocomplete="off" spellcheck="false"></label>
+        <label><span>TRAIN WINDOW</span><select id="tuneTrain"><option value="0">Every session before</option><option value="1">Last 1 session</option><option value="2">Last 2 sessions</option><option value="3">Last 3 sessions</option><option value="5">Last 5 sessions</option><option value="10">Last 10 sessions</option></select></label>
+        <label><span>SETTING 2</span><select id="tuneKey2"></select></label>
+        <label class="bt-wide"><span>VALUES 2</span><input id="tuneVals2" type="text" inputmode="decimal" autocomplete="off" spellcheck="false"></label>
+        <button class="apply-button" type="submit" id="tuneButton">TUNE <span aria-hidden="true">→</span></button>
+      </form>
+      <p id="tuneStatus" class="performance-status" role="status" aria-live="polite">Values: comma separated, or from:to:step (e.g. 10:40:5). Uses the sessions in range above.</p>
+      <div class="bt-progress" id="tuneProgress" hidden><i id="tuneBar"></i></div>
+      <div id="tuneResults" hidden>
+        <div class="pnl-stats blotter-stats bt-stats">
+          <div><span class="kicker">OUT OF SAMPLE ₹</span><strong id="wfNet" class="tnum">—</strong><small id="wfDays">WALK-FORWARD</small></div>
+          <div><span class="kicker">SETTINGS NOW ₹</span><strong id="wfBase" class="tnum">—</strong><small>SAME TEST SESSIONS</small></div>
+          <div><span class="kicker">HINDSIGHT BEST ₹</span><strong id="isBest" class="tnum">—</strong><small id="isBestAt">IN SAMPLE · ALL SESSIONS</small></div>
+          <div><span class="kicker">COMBINATIONS</span><strong id="tuneCount" class="tnum">—</strong><small id="tuneTime">—</small></div>
+        </div>
+        <div class="breakdowns bt-breakdowns bt-breakdowns--2">
+          <section><h3>WALK-FORWARD <span>PICKED ON EARLIER SESSIONS ONLY</span></h3><div class="ledger-scroll" tabindex="0"><table class="bt-table"><thead><tr><th scope="col">SESSION</th><th scope="col">PICK</th><th scope="col">TRAIN ₹</th><th scope="col">TEST ₹</th><th scope="col">NOW ₹</th></tr></thead><tbody id="wfRows"></tbody></table></div></section>
+          <section><h3>EVERY COMBINATION <span>IN SAMPLE · SELECT ONE TO USE IT</span></h3><div class="ledger-scroll" tabindex="0"><table class="bt-table"><thead><tr id="sweepHead"></tr></thead><tbody id="sweepRows"></tbody></table></div></section>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><span>LUNE / TICK BACKTESTER</span><span>INDIAN STANDARD TIME</span></footer>
+
+<dialog class="settings" id="settings" aria-labelledby="settingsTitle">
+  <form id="settingsForm" novalidate>
+    <header class="settings-head">
+      <h2 id="settingsTitle">Pivots per index</h2>
+      <button type="button" class="settings-x" id="settingsClose" aria-label="Close">×</button>
+    </header>
+    <div class="settings-scroll">
+    <dl class="settings-note">
+      <div><dt>R</dt><dd>The unit stops, targets, locks and filters are measured in, as a multiple of the index's own all-in round-trip cost.</dd></div>
+      <div><dt>Threshold</dt><dd>How far price must turn from its extreme before a pivot prints, × cost. 0: R does. With min leg 0 it is the leg itself: every leg is at least this long, each pivot printed on the first tick that far back. Bigger: bigger legs, later prints.</dd></div>
+      <div><dt>Min leg</dt><dd>0 (big legs): off, nothing is ever forced. Above 0 (Lune live): no pivot prints before the swing from the last pivot is this long, × cost, so the threshold can be smaller and prints sooner; but a pivot price then breaks forces the next one on a short leg.</dd></div>
+      <div><dt>Points</dt><dd id="settingsCostNote">At the latest session's open.</dd></div>
+    </dl>
+    <table class="settings-table">
+      <thead><tr><th scope="col">Instrument</th><th scope="col">R (×cost)</th><th scope="col">Threshold (×cost)</th><th scope="col">Min leg (×cost)</th><th scope="col" class="settings-now">In points</th></tr></thead>
+      <tbody id="settingsRows"></tbody>
+    </table>
+    </div>
+    <footer class="settings-foot">
+      <span class="settings-status" id="settingsStatus" role="status"></span>
+      <button type="button" class="settings-btn" data-preset="live" title="Lune's live HH/LL settings per index as of the last SYNC (pivots only; LIVE loads every setting)">Live Lune</button>
+      <button type="button" class="settings-btn" data-preset="scaled" title="The default: one rule for every index scaled to its own volatility, threshold 0.4x and min leg 4x its big leg (pivots only; the default also sets the leg filter to 2)">Scaled legs</button>
+      <button type="button" class="settings-btn" data-preset="big" title="One threshold per index, no minimum leg: every leg big, each pivot printed one big leg back from its extreme">Big legs</button>
+      <button type="button" class="settings-btn" data-preset="fast" title="A short threshold (about a minute to print) and the big leg as the minimum leg: a pivot price breaks forces the next one on a short leg">Fast + min leg</button>
+      <button type="button" class="settings-btn" id="settingsCancel">Cancel</button>
+      <button type="submit" class="settings-btn settings-btn--save" id="settingsSave">Apply</button>
+    </footer>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><div class="noscript">JavaScript is required to display the backtester.</div></noscript>
+</body>
+</html>

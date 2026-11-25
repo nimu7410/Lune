@@ -1,0 +1,18 @@
+# Lune tick backtester (http://127.0.0.1:8060; tailnet-only via `sudo tailscale serve --bg --tcp 8060 tcp://127.0.0.1:8060`).
+# Install (user unit, survives reboots because linger is on):
+#   cp lune-backtester.service ~/.config/systemd/user/ && systemctl --user daemon-reload \
+#     && systemctl --user enable --now lune-backtester.service
+[Unit]
+Description=Lune tick backtester
+
+[Service]
+WorkingDirectory=/home/ubuntu/Documents/Lune/backtester
+ExecStart=/home/ubuntu/Documents/Lune/venv/bin/python -u /home/ubuntu/Documents/Lune/backtester/app.py --lune-backtester
+Environment=PYTHONUNBUFFERED=1 PORT=8060 HOST=127.0.0.1
+Restart=always
+# Lowest CPU priority: a tuning run uses every core, and the live Lune processes on this box come first.
+Nice=19
+RestartSec=5
+
+[Install]
+WantedBy=default.target

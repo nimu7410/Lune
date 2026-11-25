@@ -1,0 +1,50 @@
+/* Lune · tick backtester. Only what the backtester adds; everything else is Lune's own
+   Lune-v5.css and manual.css, served from Lune (/lune/...), so the two read as one system. */
+
+.bt-days{flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}.bt-days::-webkit-scrollbar{display:none}
+.bt-days button{flex:none}.bt-days button small{display:block;color:var(--quiet);font:7px var(--mono);letter-spacing:0}
+.bt-days button[data-net="up"] small{color:var(--up)}.bt-days button[data-net="down"] small{color:var(--down)}
+
+.bt-form{display:grid;gap:14px}
+.bt-form fieldset{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin:0;padding:0;border:0;background:var(--line)}
+.bt-form legend{float:left;grid-column:1/-1;width:100%;padding:0 0 8px;background:var(--surface);color:var(--quiet);font:700 7px var(--sans);letter-spacing:.14em}
+.bt-form label{display:grid;gap:5px;min-width:0;padding:8px 10px;background:var(--bg)}
+.bt-form label span{color:var(--quiet);font:700 7px var(--sans);letter-spacing:.12em}
+.bt-form input,.bt-form select{width:100%;min-width:0;padding:0;border:0;outline:0;background:transparent;color:var(--ink);font:600 12px var(--mono);color-scheme:dark}
+.bt-form select option{background:var(--surface-2)}
+.bt-form label:last-child:nth-of-type(odd){grid-column:1/-1}
+.bt-form label:focus-within{box-shadow:inset 0 -2px var(--accent)}
+.bt-form label[data-off] input{color:var(--quiet)}
+.bt-form label[data-bad]{box-shadow:inset 0 -2px var(--down)}
+
+.ticket .trade small{font-size:8px}
+.ticket-legs dd small{color:var(--quiet)}
+
+.bt-stats{grid-template-columns:repeat(4,minmax(0,1fr))}.bt-stats>div{min-height:96px}.bt-stats strong{font-size:24px}#sHalves{font-size:17px;letter-spacing:-.02em}
+.bt-breakdowns{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:24px}.bt-breakdowns--2{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+.bt-breakdowns .ledger-scroll{max-height:300px}
+.bt-table th:first-child,.bt-table td:first-child,.bt-trades th:first-child,.bt-trades td:first-child{width:auto}
+.bt-trades{max-height:480px}.bt-trades table{min-width:860px}
+.bt-trades tbody tr,.bt-click tbody tr{cursor:pointer}
+.bt-trades tbody tr[aria-selected="true"],.bt-click tbody tr[aria-selected="true"]{background:var(--accent-soft)}
+.bt-trades td.long{color:var(--up)}.bt-trades td.short{color:var(--down)}
+.bt-table td.pick{color:var(--accent)}.bt-table tr[data-base] td:first-child{color:var(--accent)}
+.bt-table tr[data-base] td:first-child::after{content:" · NOW";color:var(--quiet);font-size:7px}
+
+.bt-tune-form{grid-template-columns:minmax(130px,1fr) minmax(130px,1fr) minmax(160px,1.6fr) auto}
+.bt-tune-form .apply-button{grid-column:4;grid-row:1/3}
+.bt-tune-form input{color:#d5d5d0}
+.bt-progress{height:2px;margin-top:14px;background:var(--line)}.bt-progress i{display:block;width:0;height:100%;background:var(--accent);transition:width .3s}
+#tuneResults,#runResults{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
+
+.performance-status[data-tone="bad"]{color:var(--down)}.performance-status[data-tone="work"]{color:var(--accent)}
+
+@media(max-width:1150px){
+  .bt-breakdowns,.bt-breakdowns--2{grid-template-columns:1fr}
+  .bt-tune-form{grid-template-columns:repeat(2,minmax(0,1fr))}.bt-tune-form .apply-button{grid-column:1/-1;grid-row:auto}
+  .ticket>.bt-form,.ticket>#pivotSummary{grid-column:1/-1}
+}
+@media(max-width:760px){
+  .bt-stats{grid-template-columns:1fr 1fr}
+  .bt-tune-form{grid-template-columns:1fr}
+}

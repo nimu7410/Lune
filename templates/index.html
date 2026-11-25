@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070707">
+  <meta name="color-scheme" content="dark">
+  <title>Lune · Live market system</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23070707'/%3E%3Cpath d='M9 7v18h15' fill='none' stroke='%23ffb45c' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="preload" href="{{ url_for('static', filename='fonts/dm-sans-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='Lune-v5.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='books.css') }}">
+  <script defer src="{{ url_for('static', filename='Lune-v6.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='tick-chart.js') }}"></script>
+</head>
+<body data-timeframe="{{ timeframe }}" data-poll-ms="{{ poll_ms }}"
+      data-index="{{ chart_index }}" data-indices="{{ indices|join(',') }}" data-mode="{{ trade_mode }}">
+<a class="skip" href="#plot">Skip to market chart</a>
+<div class="tip" id="tip" hidden><b id="tipTime">—</b><span class="tnum" id="tipPrice">—</span></div>
+
+<header class="head">
+  <a class="brand" href="/" aria-label="Lune home">
+    <i aria-hidden="true"></i>
+    <span class="brand-word">LUNE</span>
+    <span class="brand-sub">LIVE MARKET SYSTEM</span>
+  </a>
+
+  <div class="picker" role="group" aria-label="Charted index">
+    {%- for name in indices %}
+    <button type="button" class="picker-chip" data-index="{{ name }}"
+            aria-pressed="{{ 'true' if name == chart_index else 'false' }}">{{ name }}</button>
+    {%- endfor %}
+  </div>
+
+  <div class="signals">
+    <span class="pod" id="feedPod" data-state="connecting" role="status"><i class="beacon" aria-hidden="true"></i><b id="feedLabel">Linking</b></span>
+    <span class="pod pod--ping" id="pingPod" data-quality="unknown" role="status" title="Round-trip time to the Shoonya API">
+      <i class="ladder" id="pingLadder" data-level="0" aria-hidden="true"><s></s><s></s><s></s><s></s></i><b class="tnum" id="pingValue">—</b>
+    </span>
+    <span class="pod pod--mode" id="modePod" data-mode="unknown"><b id="modeValue">—</b></span>
+    <time class="pod pod--clock tnum" id="clock">--:--:--</time>
+    <button type="button" class="gear" id="settingsOpen" aria-label="Settings" title="Settings">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.8 1.17V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-2.8-1.17l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0-1.17-2.8H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.17-2.8l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 2.8-1.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 2.8 1.17l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0 1.17 2.8H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="workspace">
+  <section class="market-deck" id="market" aria-label="Live market">
+    <div class="quote" id="quote">
+      <div class="instrument">
+        <span class="kicker"><i></i> NSE / LIVE</span>
+        <h1 id="quoteIndex">{{ chart_index }}</h1>
+      </div>
+      <div class="last-price">
+        <span class="label">Last traded price</span>
+        <strong class="figure tnum"><span id="priceMain">—</span><span class="paise" id="pricePaise"></span></strong>
+        <p class="price-meta"><span id="delta" class="flat">Waiting for candles</span><span id="asOf" class="dim">—</span></p>
+      </div>
+      <div class="band today" aria-label="Today's P&amp;L">
+        <span class="range-title">Today's P&amp;L <small>· after charges</small></span>
+        <dl class="today-lines">
+          <div><dt>OPEN TRADE</dt><dd class="tnum" id="todayOpen">—</dd></div>
+          <div><dt><span class="book-tag" data-book="night">NIGHT</span> TRADE</dt><dd class="tnum" id="todayNight">—</dd></div>
+          <div><dt><span class="book-tag" data-book="day">DAY</span> RETURN</dt><dd class="tnum" id="todayDay">—</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="chart-title">
+      <div class="desk-frames chart-modes" id="chartModes" role="group" aria-label="Chart">
+        <button type="button" data-chart="v3" aria-pressed="true" title="v3's {{ timeframe }} candles and pivots (the night book)">V3 · {{ timeframe|upper }}</button>
+        <button type="button" data-chart="tick" aria-pressed="false" title="Every tick, with the HH/LL pivots the day book trades on">HH/LL · TICK</button>
+      </div>
+      <div class="chart-legend" id="chartLegend"><i></i> UP <i></i> DOWN <b>{{ timeframe }}</b></div>
+    </div>
+    <div class="chart-surface">
+      <canvas id="plot" tabindex="0" aria-label="Index candlesticks with confirmed HH and LL pivots"></canvas>
+      <div class="veil" id="veil" data-state="waiting" role="status">
+        <span class="loader" aria-hidden="true"><i></i></span>
+        <b>CONNECTING TO MARKET FEED</b>
+        <small>The chart will begin with the first valid candle.</small>
+      </div>
+    </div>
+    <aside class="readout" id="readout" aria-label="Selected candle">
+      <span class="candle-time"><small>SELECTED BAR</small><b id="candleAt">Latest</b></span>
+      <dl>
+        <div><dt>OPEN</dt><dd class="tnum" id="o">—</dd></div>
+        <div><dt>HIGH</dt><dd class="tnum" id="h">—</dd></div>
+        <div><dt>LOW</dt><dd class="tnum" id="l">—</dd></div>
+        <div><dt>CLOSE</dt><dd class="tnum" id="c">—</dd></div>
+      </dl>
+      <span class="bar-count" id="barCount">0 bars</span>
+    </aside>
+    <div class="tick-view" id="tickView" hidden>
+      <div class="chart-title">
+        <div class="desk-frames desk-windows" id="deskWindows" role="group" aria-label="Tick chart window">
+          <button type="button" data-window="5" aria-pressed="true" title="The last 5 minutes">5M</button>
+          <button type="button" data-window="15" aria-pressed="false" title="The last 15 minutes">15M</button>
+          <button type="button" data-window="30" aria-pressed="false" title="The last 30 minutes">30M</button>
+          <button type="button" data-window="60" aria-pressed="false" title="The last hour">1H</button>
+          <button type="button" data-window="180" aria-pressed="false" title="The last 3 hours">3H</button>
+          <button type="button" data-window="day" aria-pressed="false" title="The whole session">DAY</button>
+        </div>
+        <span class="desk-chart-meta tnum" id="deskChartMeta">—</span>
+      </div>
+      <div class="chart-surface desk-surface">
+        <canvas id="deskPlot" tabindex="0" aria-label="Index price by tick or by candle, with HH/LL pivots"></canvas>
+        <div class="veil" id="deskVeil" data-state="waiting" role="status">
+          <span class="loader" aria-hidden="true"><i></i></span>
+          <b>WAITING FOR THE FEED</b>
+          <small>The chart draws from the first tick.</small>
+        </div>
+      </div>
+      <aside class="readout desk-readout" aria-label="Selected point">
+        <span class="candle-time"><small id="deskReadKind">LATEST</small><b id="deskReadAt">—</b></span>
+        <dl>
+          <div><dt>OPEN</dt><dd class="tnum" id="deskO">—</dd></div>
+          <div><dt>HIGH</dt><dd class="tnum" id="deskH">—</dd></div>
+          <div><dt>LOW</dt><dd class="tnum" id="deskL">—</dd></div>
+          <div><dt>CLOSE</dt><dd class="tnum" id="deskC">—</dd></div>
+        </dl>
+        <span class="bar-count" id="deskCount">0 ticks</span>
+      </aside>
+    </div>
+  </section>
+
+  <section class="operations" id="overview" aria-label="Trading operations">
+    <article class="module strategy-module" id="engineBay" data-signal="none">
+      <div class="module-head">
+        <div><span class="module-number">01</span><span class="kicker">STRATEGY</span></div>
+        {%- if indices|length > 1 %}
+        <div class="picker picker--mini" id="enginePicker" role="group" aria-label="Engine index">
+          {%- for name in indices %}
+          <button type="button" class="picker-chip" data-index="{{ name }}" aria-label="{{ name }}" title="{{ name }}"
+                  aria-pressed="{{ 'true' if name == chart_index else 'false' }}">{{ 'NX' if name == 'NIFTYNXT50' else name[0] }}<small class="reach tnum"></small></button>
+          {%- endfor %}
+        </div>
+        {%- endif %}
+      </div>
+      <div class="strategy-reading"><strong class="bay-lead" id="bias">No signal</strong><span class="verdict" id="verdict">Idle</span></div>
+      <p class="dim" id="biasMeta">Waiting for a confirmed pivot</p>
+      <ul class="gates" id="gates" hidden></ul>
+      <div class="carry" id="carry" data-state="pending" hidden><span class="carry-tag">CARRY</span><span class="carry-note" id="carryNote">—</span><b class="carry-score tnum" id="carryScore">—</b></div>
+    </article>
+
+    <article class="module book-bay" aria-label="Today's profit, day and night books">
+      <div class="module-head"><div><span class="module-number">02</span><span class="kicker">SESSION P&amp;L</span></div><span class="tag" id="closed">—</span></div>
+      <strong class="bay-lead tnum" id="pnl">—</strong>
+      <p class="dim" id="pnlMeta">Awaiting ledger</p>
+      <div class="books" role="table" aria-label="Open position per book">
+        <div class="books-row books-head" role="row"><small role="columnheader">BOOK</small><small role="columnheader">POSITION</small><small role="columnheader">OPEN P&amp;L</small></div>
+        {%- for book, tip in (("day", "HH/LL desk: intraday, squared off by 15:10"), ("night", "v3: entered after the day book is flat, sold at the next open")) %}
+        <div class="books-row" role="row" id="{{ book }}Hold" data-book="{{ book }}" data-side="unknown">
+          <span class="book-tag" data-book="{{ book }}" role="cell" title="{{ tip }}">{{ book|upper }}</span>
+          <span role="cell"><b class="hold-side">—</b><small class="hold-entry tnum">Reading the ledger</small></span>
+          <b class="hold-open tnum" role="cell">—</b>
+        </div>
+        {%- endfor %}
+      </div>
+    </article>
+
+    <article class="module machine-bay" aria-label="Machine health">
+      <div class="module-head"><div><span class="module-number">03</span><span class="kicker">SYSTEM</span></div><span class="tag" id="healthTag" data-health="unknown">Checking</span></div>
+      <div class="probe probe--broker">
+        <span class="probe-top"><i class="led" data-health="unknown" id="brokerLed" aria-hidden="true"></i><span class="probe-name">Shoonya API</span><b class="tnum" id="brokerPing">—</b></span>
+        <span class="spark" id="spark" aria-hidden="true"></span>
+        <small class="dim" id="brokerMeta">Measuring round-trip time</small>
+      </div>
+      <div class="probe probe--split">
+        <span class="probe-top"><i class="led" data-health="unknown" id="botLed" aria-hidden="true"></i><span class="probe-name">Process</span><b class="tnum" id="botCpu">—</b></span>
+        <span class="probe-top"><i class="led" data-health="unknown" id="dbLed" aria-hidden="true"></i><span class="probe-name">Database</span><b class="tnum" id="dbCpu">—</b></span>
+        <small class="dim" id="hostMeta">Collecting metrics</small>
+      </div>
+      <div class="probe probe--feed">
+        <span class="probe-top"><i class="led" data-health="unknown" id="wsLed" aria-hidden="true"></i><span class="probe-name">WebSocket</span><b class="tnum" id="wsRate">—</b></span>
+        <span class="feeds" id="feeds" role="list" aria-label="Price source per index"></span>
+        <small class="dim" id="wsMeta">Checking the price feed</small>
+      </div>
+    </article>
+
+    <article class="module legs-bay" aria-label="Option legs by instrument">
+      <div class="module-head"><div><span class="module-number">04</span><span class="kicker">LEGS</span></div><span class="tag" id="legsTag" data-legs="unknown">Reading</span></div>
+      <ul class="legs" id="legs" tabindex="0" aria-label="Option legs, one row per index"></ul>
+      <p class="dim legs-note" id="legsNote" role="status">Reading the leg builders</p>
+    </article>
+  </section>
+
+  <section class="performance blotter" id="blotter" aria-labelledby="blotterTitle">
+    <div class="performance-intro">
+      <span class="section-index">05 / TODAY</span>
+      <h2 id="blotterTitle">Day &amp; night<br>trades</h2>
+      <p><b class="book-tag" data-book="day">DAY</b> HH/LL desk: intraday, squared off by 15:10.<br><b class="book-tag" data-book="night">NIGHT</b> v3: entered once the day book is flat, sold at the next open. Every figure is net of charges.</p>
+      <section class="account" aria-labelledby="accountTitle">
+        <div class="module-head"><div><span class="module-number">A</span><span class="kicker" id="accountTitle">ACCOUNT</span></div><span class="tag" id="accountTag">—</span></div>
+        <div class="account-balance"><small>BALANCE · CAPITAL + REALISED</small><strong class="tnum" id="acctBalance">—</strong></div>
+        <dl class="account-lines">
+          <div><dt>STARTING CAPITAL</dt><dd class="tnum" id="acctStart">—</dd></div>
+          <div><dt><span class="book-tag" data-book="day">DAY</span> REALISED · ALL DAYS</dt><dd class="tnum" id="acctDay">—</dd></div>
+          <div><dt><span class="book-tag" data-book="night">NIGHT</span> REALISED · ALL DAYS</dt><dd class="tnum" id="acctNight">—</dd></div>
+          <div><dt>SHOONYA · CASH / MARGIN USED</dt><dd class="tnum" id="acctBroker">—</dd></div>
+        </dl>
+      </section>
+    </div>
+    <div class="performance-body">
+      <div class="pnl-stats blotter-stats">
+        <div><span class="kicker">NET ₹</span><strong id="blotterNet" class="tnum">—</strong><small id="blotterClosed">BOTH BOOKS · AFTER CHARGES</small></div>
+        <div><span class="book-tag" data-book="day">DAY ₹</span><strong id="blotterDay" class="tnum">—</strong><small id="blotterDayMeta">HH/LL DESK</small></div>
+        <div><span class="book-tag" data-book="night">NIGHT ₹</span><strong id="blotterNight" class="tnum">—</strong><small id="blotterNightMeta">V3</small></div>
+        <div><span class="kicker">CHARGES ₹</span><strong id="blotterCharges" class="tnum">—</strong><small>ALL ROUND TRIPS</small></div>
+      </div>
+      <div class="periods book-filter" id="bookFilter" role="group" aria-label="Show trades of">
+        <button type="button" data-book="ALL" aria-pressed="true">ALL</button><button type="button" data-book="DAY" aria-pressed="false">DAY</button><button type="button" data-book="NIGHT" aria-pressed="false">NIGHT</button>
+      </div>
+      <div class="ledger-scroll blotter-scroll" tabindex="0" aria-label="Today's trades, day and night">
+        <table>
+          <thead><tr><th scope="col">BOOK</th><th scope="col">TIME</th><th scope="col">INDEX</th><th scope="col">SIDE</th><th scope="col">LOTS</th><th scope="col">ENTRY</th><th scope="col">EXIT</th><th scope="col">NET PTS</th><th scope="col">CHARGES</th><th scope="col">NET ₹</th></tr></thead>
+          <tbody id="blotterRows"></tbody>
+        </table>
+      </div>
+      <p class="performance-status" id="blotterStatus" role="status">Reading the ledgers…</p>
+    </div>
+  </section>
+
+  <section class="performance" id="performance" aria-labelledby="performanceTitle">
+    <div class="performance-intro">
+      <span class="section-index">06 / REVIEW</span>
+      <h2 id="performanceTitle">Performance<br>ledger</h2>
+      <p>Closed trades of both books, in rupees after charges: the same figures as today's trades and the account.</p>
+    </div>
+    <div class="performance-body">
+      <form id="pnlFilters" class="pnl-filters">
+        <label><span>FROM</span><input id="pnlStart" name="start" type="date" required></label>
+        <label><span>TO</span><input id="pnlEnd" name="end" type="date" required></label>
+        <label><span>EXECUTION</span><select id="pnlMode" name="mode"><option value="LIVE">Live</option><option value="TEST">Test</option><option value="ALL">All modes</option><option value="UNKNOWN">Legacy / unknown</option></select></label>
+        <label><span>BOOK</span><select id="pnlBook" name="book"><option value="ALL">Day + night</option><option value="DAY">Day · HH/LL</option><option value="NIGHT">Night · v3</option></select></label>
+        <label class="symbol-filter"><span>INSTRUMENT</span><select id="pnlInstrument" name="instrument"><option value="">All instruments</option></select></label>
+        <button class="apply-button" type="submit" id="pnlApply">APPLY <span aria-hidden="true">→</span></button>
+      </form>
+      <div class="periods" role="group" aria-label="Quick date ranges"><button type="button" data-days="1">TODAY</button><button type="button" data-days="7">7 DAYS</button><button type="button" data-days="30">30 DAYS</button><button type="button" data-days="month">THIS MONTH</button></div>
+      <p id="pnlStatus" class="performance-status" role="status" aria-live="polite">Loading trade history…</p>
+      <div id="pnlResults" hidden>
+        <div class="pnl-stats">
+          <div class="primary-stat"><span class="kicker">REALISED P&amp;L</span><strong id="historyTotal" class="tnum">—</strong><small id="historyMeta">₹ · AFTER CHARGES</small><svg id="historyCurve" viewBox="0 0 220 40" preserveAspectRatio="none" role="img" aria-label="Cumulative net rupees by entry day"><path id="historyLine" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"/></svg></div>
+          <div><span class="kicker">CLOSED TRADES</span><strong id="historyTrades" class="tnum">—</strong><small>SELECTED PERIOD</small></div>
+          <div><span class="kicker">WIN RATE</span><strong id="historyWinRate" class="tnum">—</strong><small>PROFITABLE TRADES</small></div>
+        </div>
+        <div class="breakdowns">
+          <section><h3>DAILY RETURN <span>ENTRY DATE / IST</span></h3><div class="ledger-scroll" tabindex="0" aria-label="Daily PNL"><table><thead><tr><th scope="col">DATE</th><th scope="col">TRADES</th><th scope="col">NET ₹</th></tr></thead><tbody id="dailyPnl"></tbody></table></div></section>
+          <section><h3>INSTRUMENT RETURN <span>CLOSED TRADES</span></h3><div class="ledger-scroll" tabindex="0" aria-label="PNL by instrument"><table><thead><tr><th scope="col">INSTRUMENT</th><th scope="col">TRADES</th><th scope="col">NET ₹</th></tr></thead><tbody id="instrumentPnl"></tbody></table></div></section>
+          <section><h3>BOOK RETURN <span>DAY / NIGHT</span></h3><div class="ledger-scroll" tabindex="0" aria-label="PNL by book"><table><thead><tr><th scope="col">BOOK</th><th scope="col">TRADES</th><th scope="col">NET ₹</th></tr></thead><tbody id="bookPnl"></tbody></table></div></section>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><span>LUNE / SYSTEM READY</span><span>INDIAN STANDARD TIME</span></footer>
+<dialog class="settings" id="settings" aria-labelledby="settingsTitle">
+  <form id="settingsForm" novalidate>
+    <header class="settings-head">
+      <h2 id="settingsTitle">Settings</h2>
+      <button type="button" class="settings-x" id="settingsClose" aria-label="Close settings">×</button>
+    </header>
+    <div class="settings-scroll">
+    <dl class="settings-note">
+      <div><dt>Threshold</dt><dd>How far price must turn before a pivot prints, as a multiple of the instrument's cost. Higher means fewer, bigger pivots.</dd></div>
+      <div><dt>Trade</dt><dd>The one instrument the automatic trader enters. An open position still closes on its own instrument.</dd></div>
+      <div><dt>Retune</dt><dd><b>OK</b>: no nearby threshold beat it; leave it. <b>ALARM</b>: doing worse than its own record; watch, change nothing yet. <b>SWITCH TO X</b>: X beat the current threshold by 10%+ over the last 10 finished sessions, in total and in both halves, with 20+ trades, and the value next to X beat it too. <b>NOT ENOUGH DATA</b>: nothing judged yet (needs 6 sessions and 20 trades). Replays of the stored ticks, all costs included: a check of the past, not a promise.</dd></div>
+      <div><dt>Checked</dt><dd id="settingsChecked">—</dd></div>
+    </dl>
+    <table class="settings-table">
+      <thead><tr><th scope="col">Instrument</th><th scope="col">Threshold (×cost)</th><th scope="col" class="settings-now">In points</th><th scope="col">Retune</th><th scope="col">Trade</th></tr></thead>
+      <tbody id="settingsRows"></tbody>
+    </table>
+    </div>
+    <footer class="settings-foot">
+      <span class="settings-status" id="settingsStatus" role="status"></span>
+      <button type="button" class="settings-btn" id="settingsCancel">Cancel</button>
+      <button type="submit" class="settings-btn settings-btn--save" id="settingsSave">Save</button>
+    </footer>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><div class="noscript">JavaScript is required to display the live market interface.</div></noscript>
+</body>
+</html>

@@ -1,0 +1,26 @@
+2026-11-03 10:59:05,962 INFO trade SENSEX SHORT 10:58:51→10:59:05 net -34.09 pts (Rs -682) reverse
+2026-11-03 10:59:06,247 INFO review SENSEX 10:58:51: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:00:29,039 INFO trade SENSEX LONG 10:59:05→11:00:29 net -31.94 pts (Rs -639) reverse
+2026-11-03 11:00:29,367 INFO review SENSEX 10:59:05: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:00:46,055 INFO trade SENSEX SHORT 11:00:29→11:00:46 net -35.00 pts (Rs -700) reverse
+2026-11-03 11:00:46,367 INFO review SENSEX 11:00:29: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:03:40,120 INFO trade BANKNIFTY LONG 11:02:01→11:03:40 net -50.02 pts (Rs -1501) reverse
+2026-11-03 11:03:40,445 INFO review BANKNIFTY 11:02:01: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:03:53,247 INFO trade SENSEX LONG 11:00:46→11:03:53 net -10.20 pts (Rs -204) reverse
+2026-11-03 11:03:53,582 INFO review SENSEX 11:00:46: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:06:23,889 INFO trade NIFTY SHORT 11:04:02→11:06:23 net 13.88 pts (Rs 902) reverse
+2026-11-03 11:06:24,355 INFO review NIFTY 11:04:02: gave back open profit -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:06:29,419 INFO trade SENSEX SHORT 11:03:53→11:06:29 net 60.41 pts (Rs 1208) reverse
+2026-11-03 11:06:29,873 INFO review SENSEX 11:03:53: gave back open profit -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:06:42,148 INFO trade BANKNIFTY SHORT 11:03:40→11:06:42 net 17.08 pts (Rs 512) reverse
+2026-11-03 11:06:42,383 INFO review BANKNIFTY 11:03:40: spread and slippage -> rejected (only 1 day(s) of ticks, need 2; not better overall; not better in both halves; nearby settings not better)
+2026-11-03 11:06:49,150 INFO trade FINNIFTY SHORT 11:04:04→11:06:49 net -0.36 pts (Rs -22) reverse
+2026-11-03 11:06:49,380 INFO review FINNIFTY 11:04:04: spread and slippage -> rejected (only 1 day(s) of ticks, need 2; not better in both halves; nearby settings not better)
+2026-11-03 11:08:10,086 INFO trade NIFTY LONG 11:06:23→11:08:10 net -3.36 pts (Rs -219) reverse
+2026-11-03 11:08:10,469 INFO review NIFTY 11:06:23: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:08:12,515 INFO trade SENSEX LONG 11:06:29→11:08:12 net -1.24 pts (Rs -25) reverse
+2026-11-03 11:08:12,881 INFO review SENSEX 11:06:29: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:10:08,684 INFO trade BANKNIFTY LONG 11:06:42→11:10:08 net -44.82 pts (Rs -1345) reverse
+2026-11-03 11:10:09,112 INFO review BANKNIFTY 11:06:42: entered in chop -> rejected (only 1 day(s) of ticks, need 2; not better in both halves)
+2026-11-03 11:10:12,683 INFO trade FINNIFTY LONG 11:06:49→11:10:12 net -26.44 pts (Rs -1586) reverse
+2026-11-03 11:10:12,991 INFO review FINNIFTY 11:06:49: spread and slippage -> rejected (only 1 day(s) of ticks, need 2; not better overall; not better in both halves; nearby settings not better)

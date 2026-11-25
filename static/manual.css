@@ -1,0 +1,124 @@
+/* Lune · manual desk. Built from the console's own tokens (Lune-v5.css), so
+   the desk reads as the same instrument in another mode. */
+.desk{border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-left:1px solid var(--line);background:var(--surface);animation:enter .5s both}
+.desk-quote .kicker b{color:var(--ink);font:700 9px var(--mono);letter-spacing:.08em}
+.desk-hold{display:grid;align-content:end;gap:7px;min-width:0;padding:28px clamp(20px,2.6vw,42px);border-left:1px solid var(--line)}
+.desk-side{font-size:30px;font-weight:600;line-height:1;letter-spacing:-.04em;color:var(--muted)}
+.desk-hold[data-side="long"] .desk-side{color:var(--up)}.desk-hold[data-side="short"] .desk-side{color:var(--down)}.desk-hold[data-side="unknown"] .desk-side{color:var(--warn)}
+.desk-hold-line{color:var(--muted);font:10px var(--mono);overflow-wrap:anywhere}.desk-open{font:600 17px var(--mono);white-space:nowrap}
+
+.desk-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px)}
+.desk-chart{min-width:0;border-right:1px solid var(--line)}
+.desk-frames{display:flex;align-items:center}
+.desk-frames button{position:relative;min-height:34px;padding:5px 12px;border:0;background:transparent;color:var(--quiet);font:700 9px var(--mono);letter-spacing:.08em;transition:color .18s}
+.desk-frames button::after{content:"";position:absolute;right:12px;bottom:0;left:12px;height:1px;background:var(--accent);transform:scaleX(0);transition:transform .18s}
+.desk-frames button:hover,.desk-frames button[aria-pressed="true"]{color:var(--ink)}.desk-frames button[aria-pressed="true"]::after{transform:scaleX(1)}
+.desk-chart .chart-title{height:auto;min-height:48px;flex-wrap:wrap;gap:0 4px}
+.desk-windows{margin-right:auto;border-left:1px solid var(--line)}@media(max-width:620px){.desk-windows{border-left:0}}.desk-windows button{padding-inline:8px}.desk-windows button::after{right:8px;left:8px}
+.desk-chart-meta{min-width:0;overflow:hidden;color:var(--quiet);font:9px var(--mono);letter-spacing:0;text-overflow:ellipsis;white-space:nowrap}
+.desk-surface{height:clamp(460px,56vh,720px)}#deskPlot{position:relative;z-index:1;display:block;width:100%;height:100%;cursor:crosshair;touch-action:pan-y}
+
+.ticket{display:flex;flex-direction:column;gap:20px;min-width:0;padding:26px clamp(18px,2vw,30px)}
+.ticket-instrument{display:grid;gap:5px}.ticket-instrument small{color:var(--quiet);font:700 7px var(--sans);letter-spacing:.14em}
+.ticket-instrument b{font-size:30px;font-weight:600;line-height:1;letter-spacing:-.04em;overflow-wrap:anywhere}.ticket-instrument span{color:var(--muted);font:9px var(--mono)}
+.lots{display:grid;gap:8px}.lots label{color:var(--quiet);font:700 7px var(--sans);letter-spacing:.14em}.lots small{color:var(--muted);font:9px var(--mono)}
+.lots-stepper{display:grid;grid-template-columns:46px minmax(0,1fr) 46px;border:1px solid var(--line-bright);background:var(--bg)}
+.lots-stepper button{border:0;background:transparent;color:var(--muted);font:500 20px/1 var(--mono);transition:color .18s,background .18s}.lots-stepper button:hover{background:var(--surface-2);color:var(--ink)}
+.lots-stepper input{width:100%;min-width:0;height:48px;border:0;border-right:1px solid var(--line);border-left:1px solid var(--line);outline:0;background:transparent;color:var(--ink);font:600 22px var(--mono);text-align:center;-moz-appearance:textfield;appearance:textfield}
+.lots-stepper input::-webkit-inner-spin-button,.lots-stepper input::-webkit-outer-spin-button{margin:0;-webkit-appearance:none}.lots-stepper:focus-within{box-shadow:inset 0 -2px var(--accent)}
+
+.dock{display:contents}.dock-pnl{display:none}
+.dock-pnl div{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:9px 11px;background:var(--bg)}
+.dock-pnl dt{flex:none;color:var(--quiet);font:700 7px var(--sans);letter-spacing:.12em}.dock-pnl dd{min-width:0;font:600 clamp(11px,3.4vw,14px) var(--mono);text-align:right;white-space:nowrap}
+.ticket-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line)}
+.trade{display:grid;align-content:space-between;gap:10px;min-height:88px;min-width:0;padding:14px 12px;border:0;text-align:left;transition:filter .18s,background .18s}
+.trade b{font:700 18px/1 var(--sans);letter-spacing:.06em}.trade small{color:var(--muted);font:8.5px/1.3 var(--mono)}
+.trade--buy{background:var(--up-soft);color:var(--up);box-shadow:inset 0 -2px var(--up)}.trade--sell{background:var(--down-soft);color:var(--down);box-shadow:inset 0 -2px var(--down)}.trade--exit{background:var(--bg);color:var(--ink);box-shadow:inset 0 -2px var(--line-bright)}
+.trade:not(:disabled):hover{filter:brightness(1.25)}.trade:not(:disabled):active{filter:brightness(1.45)}
+.trade:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}.ticket[data-working] .trade:disabled{cursor:progress}
+.ticket-status{min-height:36px;padding:9px 11px;border-left:2px solid var(--line-bright);background:var(--bg);color:var(--muted);font:9.5px/1.45 var(--mono);overflow-wrap:anywhere}
+.ticket-status[data-tone="ok"]{border-color:var(--up);color:var(--up)}.ticket-status[data-tone="bad"]{border-color:var(--down);color:var(--down)}.ticket-status[data-tone="work"]{border-color:var(--accent);color:var(--accent)}
+.ticket-legs{display:grid;gap:1px;background:var(--line)}.ticket-legs div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 11px;background:var(--bg)}
+.ticket-legs dt{flex:none;color:var(--quiet);font:700 7px var(--sans);letter-spacing:.12em}.ticket-legs dd{min-width:0;color:var(--ink);font:10px var(--mono);text-align:right;overflow-wrap:anywhere}
+.ticket-note{margin-top:auto;font-size:9px}
+.tag[data-desk="ready"]{color:var(--up);border-color:var(--up-line)}.tag[data-desk="held"]{color:var(--accent);border-color:rgba(255,180,92,.38)}
+.tag[data-desk="busy"]{color:var(--warn)}.tag[data-desk="error"]{color:var(--down);border-color:var(--down-line)}
+
+.blotter-stats{grid-template-columns:repeat(4,minmax(0,1fr))}.blotter-stats>div{min-height:110px}
+.blotter-scroll{max-height:360px;margin-top:24px}.blotter th:first-child,.blotter td:first-child{width:auto}
+.blotter td.open{color:var(--accent)}
+
+@media(max-width:1150px){
+  .desk-hold{grid-column:1/-1;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px 24px;padding-block:20px;border-top:1px solid var(--line);border-left:0}
+  .desk-grid{grid-template-columns:1fr}.desk-chart{border-right:0;border-bottom:1px solid var(--line)}
+  .ticket{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.ticket>.module-head,.ticket-actions,.ticket-status,.ticket-note{grid-column:1/-1}
+}
+@media(max-width:760px){
+  .desk-hold{grid-template-columns:1fr auto;padding:20px}.desk-hold .range-title,.desk-open{grid-column:1/-1}.desk-open{font-size:clamp(13px,4.2vw,17px)}.desk-surface{height:390px}
+  .ticket{display:flex;align-items:stretch;padding:24px 20px}.blotter-stats{grid-template-columns:1fr 1fr}
+  /* Phones: buy / short / exit and the open P&L always on screen, as in Delta.
+     The dock sits inside #desk, so it leaves with the manual console. */
+  /* A transform left on .desk by its entrance animation would pin the fixed
+     dock to the desk instead of the screen. */
+  :root{--dock-h:140px}.desk{animation-fill-mode:backwards}
+  .dock{position:fixed;z-index:40;right:0;bottom:0;left:0;display:grid;gap:1px;padding:10px max(12px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line-bright);background:rgba(10,10,11,.97);box-shadow:0 -8px 24px rgba(0,0,0,.45)}
+  .dock-pnl{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+  .dock .trade{min-height:58px;gap:6px}
+  body[data-ui="manual"]{padding-bottom:calc(var(--dock-h) + env(safe-area-inset-bottom))}
+  body[data-ui="manual"] .toast{bottom:calc(var(--dock-h) + 12px + env(safe-area-inset-bottom))}
+}
+@media(max-width:430px){
+  .desk-surface{height:350px}.trade{min-height:74px}.dock .trade{min-height:58px}.blotter-stats{grid-template-columns:1fr}.blotter-stats>div{min-height:0}
+  .blotter th,.blotter td{padding-inline:4px;font-size:8px}
+}
+
+/* Settings: the gear in the header, and its dialog */
+.gear{display:grid;flex:none;place-items:center;width:32px;height:32px;padding:0;border:1px solid var(--line-bright);background:transparent;color:var(--muted);cursor:pointer;transition:color .18s,border-color .18s}
+.gear:hover{border-color:var(--accent);color:var(--ink)}.gear:focus-visible,.settings-x:focus-visible,.settings-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.settings{width:min(940px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--line-bright);background:var(--surface);color:var(--ink)}
+.settings::backdrop{background:rgba(0,0,0,.66)}
+.settings-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.settings-head h2{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.settings-x{width:32px;height:32px;padding:0;border:0;background:transparent;color:var(--muted);font:400 22px/1 var(--sans);cursor:pointer}.settings-x:hover{color:var(--ink)}
+.settings-note{display:grid;gap:8px;margin:0;padding:14px 20px;border-bottom:1px solid var(--line);font:12px/1.5 var(--sans)}
+.settings-note div{display:grid;grid-template-columns:82px minmax(0,1fr);gap:12px}.settings-note dt{color:var(--ink);font-weight:600}.settings-note dd{margin:0;color:var(--muted)}
+.settings-table{width:100%;table-layout:auto;border-collapse:collapse}
+.settings-table th,.settings-table td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}.settings-table tr>:first-child{padding-left:20px}.settings-table tr>:last-child{padding-right:20px}
+.settings-table thead th{overflow:visible;min-width:96px;color:var(--quiet);font:700 8px var(--sans);letter-spacing:.08em;text-transform:uppercase}.settings-table thead th:last-child{min-width:0}
+.settings-table tbody th{color:var(--ink);font:600 12px var(--mono);letter-spacing:.02em}
+.settings-table td.settings-now{color:var(--muted);font:11px var(--mono);white-space:nowrap}
+.settings-table input[type=number]{width:76px;height:32px;padding:0 8px;border:1px solid var(--line-bright);outline:0;background:var(--bg);color:var(--ink);font:600 13px var(--mono);text-align:right}
+.settings-table input[type=number]:focus{border-color:var(--accent)}
+.settings-table input[type=radio]{width:17px;height:17px;margin:0;accent-color:var(--accent);cursor:pointer}
+.settings-foot{display:flex;align-items:center;gap:8px;padding:14px 20px}
+.settings-status{flex:1;min-width:0;color:var(--muted);font:11px/1.4 var(--mono)}.settings-status[data-tone="bad"]{color:var(--down)}.settings-status[data-tone="work"]{color:var(--accent)}
+.settings-btn{min-height:34px;padding:0 16px;border:1px solid var(--line-bright);background:transparent;color:var(--ink);font:700 10px var(--mono);letter-spacing:.08em;cursor:pointer}.settings-btn:hover{background:var(--surface-2)}
+.settings-btn--save{border-color:var(--accent);background:var(--accent);color:#14100a}.settings-btn--save:hover{background:var(--accent);filter:brightness(1.08)}.settings-btn:disabled{opacity:.5;cursor:default}
+.settings-table td.settings-retune{display:grid;gap:3px;min-width:150px;max-width:260px;white-space:normal}
+.settings-retune b{font:700 10px var(--mono);letter-spacing:.06em}.settings-retune small{color:var(--muted);font:10px/1.35 var(--sans);overflow-wrap:anywhere}.settings-retune small:empty{display:none}
+.settings-retune[data-verdict="ok"] b{color:var(--up)}.settings-retune[data-verdict="alarm"] b{color:var(--warn)}.settings-retune[data-verdict="switch"] b{color:var(--down)}
+.settings-retune[data-verdict="pending"] b,.settings-retune[data-verdict="none"] b{color:var(--quiet)}
+.settings-trade label{display:inline-flex;align-items:center;min-height:32px;cursor:pointer}.settings-trade span{display:none}
+/* Phone: a full-screen sheet of one card per instrument, Save always in reach. */
+@media(max-width:520px){
+  .settings{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0}
+  .settings form{display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100%}
+  .settings-head{padding:calc(10px + env(safe-area-inset-top)) 16px 10px}
+  .settings-x{width:44px;height:44px;margin-right:-10px}
+  .settings-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .settings-note{padding:12px 16px}.settings-note div{grid-template-columns:1fr;gap:1px}
+  .settings-table,.settings-table tbody{display:block}.settings-table thead{display:none}
+  .settings-table tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .settings-table th,.settings-table td,.settings-table tr>:first-child,.settings-table tr>:last-child{padding:0;border:0}
+  .settings-table tbody th{align-self:center;font-size:14px}
+  .settings-table td.settings-now{display:none}
+  .settings-table td.settings-retune{grid-row:3;grid-column:1/-1;max-width:none;min-width:0}
+  .settings-table td.settings-trade{grid-row:1;grid-column:2;justify-self:end}
+  .settings-table td[data-label]{grid-row:2;grid-column:1/-1}
+  .settings-trade label{gap:10px;min-height:44px;padding-left:12px}.settings-trade span{display:inline;color:var(--muted);font:12px var(--sans)}
+  .settings-table input[type=radio]{width:22px;height:22px}
+  .settings-table td[data-label]::before{content:attr(data-label);display:block;margin-bottom:5px;color:var(--muted);font:11px var(--sans)}
+  .settings-table input[type=number]{width:100%;height:44px;font-size:16px}
+  .settings-foot{padding:10px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--surface)}
+  .settings-btn{min-height:44px}.settings-status{order:-1;flex-basis:100%}.settings-foot{flex-wrap:wrap}.settings-foot .settings-btn{flex:1}
+}

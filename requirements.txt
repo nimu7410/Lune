@@ -1,0 +1,49 @@
+# Lune production dependencies
+# Verified with Python 3.13.1 on Windows.
+# Install manually with: python -m pip install -r requirements.txt
+
+# Web UI and HTTP clients
+Flask==3.1.3
+waitress==3.0.2
+requests==2.34.2
+
+# Market data, broker API, and WebSocket feed
+NorenRestApiPy==0.0.22
+websocket-client==1.5.3
+
+# Strategy v3 - the versions its frozen results were produced with (numba was
+# only used by its research scripts)
+numpy==2.5.2
+pandas==3.0.5
+numba==0.67.0
+pyarrow==25.0.1
+
+# Authentication
+playwright==1.61.0
+pyotp==2.9.0
+python-dotenv==1.2.2
+
+# Database, monitoring, dates, and Windows timezone data
+psutil==6.1.1
+psycopg2-binary==2.9.10
+python-dateutil==2.9.0.post0
+tzdata==2024.2
+
+# Pinned supporting packages for reproducible installs
+blinker==1.9.0
+certifi==2024.12.14
+charset-normalizer==3.4.0
+click==8.3.3
+colorama==0.4.6
+greenlet==3.5.3
+idna==3.10
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+llvmlite==0.49.0
+pyee==13.0.1
+pytz==2024.2
+six==1.17.0
+typing_extensions==4.16.0
+urllib3==2.3.0
+Werkzeug==3.1.6

@@ -1,0 +1,386 @@
+{
+ "2026-11-03/BANKNIFTY": {
+  "day": "2026-11-03",
+  "first_ms": 1793680546433,
+  "index": "BANKNIFTY",
+  "last_ms": 1793699978531,
+  "sha256": "0f41d2106cf8f953ff200defac6ad9866c0ae9368829ccfd1c84882fef8149e7",
+  "ticks": 66682
+ },
+ "2026-11-03/FINNIFTY": {
+  "day": "2026-11-03",
+  "first_ms": 1793680546435,
+  "index": "FINNIFTY",
+  "last_ms": 1793699978533,
+  "sha256": "6fbe156a35e3f7569d64433c46366a1704e8d8c4f91da9bd80940a8ac6ce34b6",
+  "ticks": 68996
+ },
+ "2026-11-03/MIDCPNIFTY": {
+  "day": "2026-11-03",
+  "first_ms": 1793680546432,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1793699978534,
+  "sha256": "5982b6765d70e982bc72fb31b5aa20d36cb2727a4d9d7565db8e4b3d75a1286e",
+  "ticks": 66051
+ },
+ "2026-11-03/NIFTY": {
+  "day": "2026-11-03",
+  "first_ms": 1793680546432,
+  "index": "NIFTY",
+  "last_ms": 1793699978399,
+  "sha256": "4a972b4990ac0356d1307505b8d8d49f39c8a5dabc09175d52d48d03c8488f2e",
+  "ticks": 163417
+ },
+ "2026-11-03/NIFTYNXT50": {
+  "day": "2026-11-03",
+  "first_ms": 1793680546435,
+  "index": "NIFTYNXT50",
+  "last_ms": 1793700095051,
+  "sha256": "b3e3063a5e59fcd0ba1063c89b0b082902cbd2e9e787697067f51f354260e93a",
+  "ticks": 72741
+ },
+ "2026-11-03/SENSEX": {
+  "day": "2026-11-03",
+  "first_ms": 1793680546432,
+  "index": "SENSEX",
+  "last_ms": 1793699997755,
+  "sha256": "abad65f9963a260fe1a1f582da9c6e619862af50e254fd0b8a200995a44a4996",
+  "ticks": 16682
+ },
+ "2026-11-04/BANKNIFTY": {
+  "day": "2026-11-04",
+  "first_ms": 1793763900377,
+  "index": "BANKNIFTY",
+  "last_ms": 1793786361275,
+  "sha256": "d7c3abd9ab100d847650107c2ed6f6a0626189cf962c275ad4dbe8bf6ff73950",
+  "ticks": 77144
+ },
+ "2026-11-04/FINNIFTY": {
+  "day": "2026-11-04",
+  "first_ms": 1793763900377,
+  "index": "FINNIFTY",
+  "last_ms": 1793786361275,
+  "sha256": "1753f94144ccb8f935ec5b897684de81aca30aa9750633c85e136d5fdd0887b3",
+  "ticks": 80067
+ },
+ "2026-11-04/MIDCPNIFTY": {
+  "day": "2026-11-04",
+  "first_ms": 1793763900378,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1793786361278,
+  "sha256": "09445b7636cb528e9253ac91adcf36277bdee44bdca762fc060c6e853b98134f",
+  "ticks": 78003
+ },
+ "2026-11-04/NIFTY": {
+  "day": "2026-11-04",
+  "first_ms": 1793763900132,
+  "index": "NIFTY",
+  "last_ms": 1793786361274,
+  "sha256": "5e85b9312f2f87f55ac4410bfdd088d1435724a1ab01ac3892cfa3dabc6751e0",
+  "ticks": 191236
+ },
+ "2026-11-04/NIFTYNXT50": {
+  "day": "2026-11-04",
+  "first_ms": 1793763900376,
+  "index": "NIFTYNXT50",
+  "last_ms": 1793786471541,
+  "sha256": "b214d1d9a17ea27828dc808a93c26bb599d110e3ff98c3f4daaa7da0e27f4f0a",
+  "ticks": 85778
+ },
+ "2026-11-04/SENSEX": {
+  "day": "2026-11-04",
+  "first_ms": 1793763900371,
+  "index": "SENSEX",
+  "last_ms": 1793786330095,
+  "sha256": "84e38993227a1fe1e887c9e410ef413e4a4b1b5f99285c8c8f90b95262bd4aa6",
+  "ticks": 19394
+ },
+ "2026-11-05/BANKNIFTY": {
+  "day": "2026-11-05",
+  "first_ms": 1793850301898,
+  "index": "BANKNIFTY",
+  "last_ms": 1793872992367,
+  "sha256": "fff3162a8a3e253df477aa8c0b857a9eb6dd75b9657db60b57172cbc90df4381",
+  "ticks": 82060
+ },
+ "2026-11-05/FINNIFTY": {
+  "day": "2026-11-05",
+  "first_ms": 1793850301898,
+  "index": "FINNIFTY",
+  "last_ms": 1793872992367,
+  "sha256": "3d623167b74f8826f1273fc3542a85ce3cba4262bfdbdefb971a1ec400aef42a",
+  "ticks": 83080
+ },
+ "2026-11-05/MIDCPNIFTY": {
+  "day": "2026-11-05",
+  "first_ms": 1793850301898,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1793872992366,
+  "sha256": "4f14a043beab355f78331904f686f41e0aa3f973e3d606187b2c9b898fa208f1",
+  "ticks": 79294
+ },
+ "2026-11-05/NIFTY": {
+  "day": "2026-11-05",
+  "first_ms": 1793850301899,
+  "index": "NIFTY",
+  "last_ms": 1793872992366,
+  "sha256": "ae41d8b101377485fcb898f2c321e6a25bd4eef61d6bf5bd90ff781937ebcd6e",
+  "ticks": 198655
+ },
+ "2026-11-05/NIFTYNXT50": {
+  "day": "2026-11-05",
+  "first_ms": 1793850301897,
+  "index": "NIFTYNXT50",
+  "last_ms": 1793872992367,
+  "sha256": "eb8d5c2b0ee0b395baa5fd1c592f8250dd83d38631b258aad64b06908048991e",
+  "ticks": 86443
+ },
+ "2026-11-05/SENSEX": {
+  "day": "2026-11-05",
+  "first_ms": 1793850301943,
+  "index": "SENSEX",
+  "last_ms": 1793872992367,
+  "sha256": "86712c9453a21fe30b79ff3938cbb597d7596a4d79d94fca41a255ac3b8abebd",
+  "ticks": 20767
+ },
+ "2026-11-06/BANKNIFTY": {
+  "day": "2026-11-06",
+  "first_ms": 1793936700583,
+  "index": "BANKNIFTY",
+  "last_ms": 1793959152377,
+  "sha256": "b08d526294e0f88160d786514998f665705dfb59bea8f25c98c2831a48852e79",
+  "ticks": 81594
+ },
+ "2026-11-06/FINNIFTY": {
+  "day": "2026-11-06",
+  "first_ms": 1793936700584,
+  "index": "FINNIFTY",
+  "last_ms": 1793959152378,
+  "sha256": "68d389c0e2fb26bbfee1c343de7678b04fdf79893fe39905407c63d4422f99b4",
+  "ticks": 81579
+ },
+ "2026-11-06/MIDCPNIFTY": {
+  "day": "2026-11-06",
+  "first_ms": 1793936700584,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1793959152380,
+  "sha256": "0a5d8b44a3c301d53d76190d0e530f9a52172b0d16be86cbe9a5f5280b1c42ec",
+  "ticks": 76947
+ },
+ "2026-11-06/NIFTY": {
+  "day": "2026-11-06",
+  "first_ms": 1793936700072,
+  "index": "NIFTY",
+  "last_ms": 1793959152384,
+  "sha256": "c19dd7a1dddca8daaddf47ea07aab275553ea043bc8dc61847e5fad53b16881f",
+  "ticks": 196415
+ },
+ "2026-11-06/NIFTYNXT50": {
+  "day": "2026-11-06",
+  "first_ms": 1793936700583,
+  "index": "NIFTYNXT50",
+  "last_ms": 1793959281648,
+  "sha256": "aba9bc46ebee40bfd939820809c7f6bc09f4e56b42ea74c9e550cdccee548e7b",
+  "ticks": 86177
+ },
+ "2026-11-06/SENSEX": {
+  "day": "2026-11-06",
+  "first_ms": 1793936700313,
+  "index": "SENSEX",
+  "last_ms": 1793959204898,
+  "sha256": "76c68604f53b2e44368da8cd67e7ba9cc7e418b6e2e5342957a3da958ae2ced0",
+  "ticks": 20524
+ },
+ "2026-11-09/BANKNIFTY": {
+  "day": "2026-11-09",
+  "first_ms": 1794195900258,
+  "index": "BANKNIFTY",
+  "last_ms": 1794218302373,
+  "sha256": "dd77770e75de7be54acbdf9ac8f18287212cd31297b1d1cf180b2cae5506b50d",
+  "ticks": 81248
+ },
+ "2026-11-09/FINNIFTY": {
+  "day": "2026-11-09",
+  "first_ms": 1794195900259,
+  "index": "FINNIFTY",
+  "last_ms": 1794218302374,
+  "sha256": "8caf38cefb0c8d90db0f999387295e422df5245c451e90c3121d6d93856f721c",
+  "ticks": 80897
+ },
+ "2026-11-09/MIDCPNIFTY": {
+  "day": "2026-11-09",
+  "first_ms": 1794195900259,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1794218302382,
+  "sha256": "b03c5dc6c275ab5818267c639d904a84d28ffb672db92b97dc32d5f1989dfa65",
+  "ticks": 73445
+ },
+ "2026-11-09/NIFTY": {
+  "day": "2026-11-09",
+  "first_ms": 1794195900018,
+  "index": "NIFTY",
+  "last_ms": 1794218302354,
+  "sha256": "159ac402e9883b49d3f6d975390ae3f969932c6b117cbfc42bc24f46166e48cc",
+  "ticks": 193426
+ },
+ "2026-11-09/NIFTYNXT50": {
+  "day": "2026-11-09",
+  "first_ms": 1794195900257,
+  "index": "NIFTYNXT50",
+  "last_ms": 1794218487176,
+  "sha256": "a71a24559d77e24419b99ea1f2f5527689095584017f21a4157795234ed5d156",
+  "ticks": 86186
+ },
+ "2026-11-09/SENSEX": {
+  "day": "2026-11-09",
+  "first_ms": 1794195900127,
+  "index": "SENSEX",
+  "last_ms": 1794218339188,
+  "sha256": "1a5a9e56bc75340c91e35b3adff67dedfb2e2ba1e294f5ae5f54a0ec0fcf1d21",
+  "ticks": 20597
+ },
+ "2026-11-11/BANKNIFTY": {
+  "day": "2026-11-11",
+  "first_ms": 1794368700530,
+  "index": "BANKNIFTY",
+  "last_ms": 1794391194508,
+  "sha256": "381c0430ec21e281b346590671272f78d47b61935764f32917c87a5d81e57fd3",
+  "ticks": 83963
+ },
+ "2026-11-11/FINNIFTY": {
+  "day": "2026-11-11",
+  "first_ms": 1794368700530,
+  "index": "FINNIFTY",
+  "last_ms": 1794391194509,
+  "sha256": "e9ceee6fbd21f6ab0c9d620be236175c9877e899bd8ddeb6bc4d1f5933a3e24d",
+  "ticks": 82045
+ },
+ "2026-11-11/MIDCPNIFTY": {
+  "day": "2026-11-11",
+  "first_ms": 1794368700531,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1794391194511,
+  "sha256": "22da7f61aca18d47ccdc3ce6d46ace93df86635de51c6255b0bdaa2fbc77440b",
+  "ticks": 78132
+ },
+ "2026-11-11/NIFTY": {
+  "day": "2026-11-11",
+  "first_ms": 1794368700048,
+  "index": "NIFTY",
+  "last_ms": 1794391194348,
+  "sha256": "b5495b5fd6f1f0e890b6a9fd2318066090fd251896e44eb16ab92c28774644d4",
+  "ticks": 195327
+ },
+ "2026-11-11/NIFTYNXT50": {
+  "day": "2026-11-11",
+  "first_ms": 1794368700529,
+  "index": "NIFTYNXT50",
+  "last_ms": 1794391288285,
+  "sha256": "6d72a20487a2ca568a474fce8684befbe2639398db775bbb5d6b9ae7a7f43605",
+  "ticks": 86063
+ },
+ "2026-11-11/SENSEX": {
+  "day": "2026-11-11",
+  "first_ms": 1794368700531,
+  "index": "SENSEX",
+  "last_ms": 1794391205296,
+  "sha256": "59fa99cf949c728350cbfed2861037a4d738ee63923da8b1caa344ffd9ddd882",
+  "ticks": 20524
+ },
+ "2026-11-12/BANKNIFTY": {
+  "day": "2026-11-12",
+  "first_ms": 1794455100134,
+  "index": "BANKNIFTY",
+  "last_ms": 1794477544504,
+  "sha256": "0e250555aef0b609101d999eaba307caa4eebdf582a3b1b0ffe633759774988b",
+  "ticks": 81588
+ },
+ "2026-11-12/FINNIFTY": {
+  "day": "2026-11-12",
+  "first_ms": 1794455100135,
+  "index": "FINNIFTY",
+  "last_ms": 1794477544504,
+  "sha256": "680d9d176eafe68cf5fac93c660e3195b76757e31fd69316ae6ff0e7fd20f714",
+  "ticks": 80901
+ },
+ "2026-11-12/MIDCPNIFTY": {
+  "day": "2026-11-12",
+  "first_ms": 1794455100135,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1794477544504,
+  "sha256": "a3a8878bfbac8a921c0d8d67e83e655bb0df5982c49c71bdc069f68376e9f17a",
+  "ticks": 77130
+ },
+ "2026-11-12/NIFTY": {
+  "day": "2026-11-12",
+  "first_ms": 1794455100039,
+  "index": "NIFTY",
+  "last_ms": 1794477544334,
+  "sha256": "f307824e05f61cfccc86bede84ef1082656c4ef335851e7615184e7cc32b1f64",
+  "ticks": 190464
+ },
+ "2026-11-12/NIFTYNXT50": {
+  "day": "2026-11-12",
+  "first_ms": 1794455100133,
+  "index": "NIFTYNXT50",
+  "last_ms": 1794477684542,
+  "sha256": "6808055a1746f57d88279f0e87f9776658dfa26871a20c96f132d4697a5ae97d",
+  "ticks": 86068
+ },
+ "2026-11-12/SENSEX": {
+  "day": "2026-11-12",
+  "first_ms": 1794455100280,
+  "index": "SENSEX",
+  "last_ms": 1794477555348,
+  "sha256": "ee3389672efe5fd975e87b7afb2186a7bdbb65c5b80554411b9044933e9a91d2",
+  "ticks": 19658
+ },
+ "2026-11-13/BANKNIFTY": {
+  "day": "2026-11-13",
+  "first_ms": 1794541500338,
+  "index": "BANKNIFTY",
+  "last_ms": 1794563912227,
+  "sha256": "eaedc0061965bc9da5e8c0d3a0856c033cc6526d9dc57cead72224b99a6e36f4",
+  "ticks": 78081
+ },
+ "2026-11-13/FINNIFTY": {
+  "day": "2026-11-13",
+  "first_ms": 1794541500338,
+  "index": "FINNIFTY",
+  "last_ms": 1794563912227,
+  "sha256": "9efe27f2b1cc781c440107209e94f52a5247ebf9b59e272fc3307debcfe588e9",
+  "ticks": 77544
+ },
+ "2026-11-13/MIDCPNIFTY": {
+  "day": "2026-11-13",
+  "first_ms": 1794541500338,
+  "index": "MIDCPNIFTY",
+  "last_ms": 1794563912227,
+  "sha256": "a0534cb84db58ef96d3912c6e2e56017b27f3ad4a145a09a0b88827ab4113066",
+  "ticks": 76395
+ },
+ "2026-11-13/NIFTY": {
+  "day": "2026-11-13",
+  "first_ms": 1794541500116,
+  "index": "NIFTY",
+  "last_ms": 1794563884339,
+  "sha256": "6b01ee2beb584ea3da4b349ad0e66d90cec90187a1b9f30c4d50f7b114b47212",
+  "ticks": 180170
+ },
+ "2026-11-13/NIFTYNXT50": {
+  "day": "2026-11-13",
+  "first_ms": 1794541500337,
+  "index": "NIFTYNXT50",
+  "last_ms": 1794564076500,
+  "sha256": "3a85c86d045e52903e7c19ca2a26f3ec9521caa277160e92ad8654e5cdd23467",
+  "ticks": 85355
+ },
+ "2026-11-13/SENSEX": {
+  "day": "2026-11-13",
+  "first_ms": 1794541500275,
+  "index": "SENSEX",
+  "last_ms": 1794563895932,
+  "sha256": "333b16b7e62983e123f2e754d3ef7d14d0d00f6d63dbc52d37b6ca429b7109a1",
+  "ticks": 18146
+ }
+}

@@ -1,0 +1,16 @@
+# HH/LL paper trader. Reads the ticks the Lune service stores in PostgreSQL (schema hhll); no broker login.
+# Install (user unit, survives reboots because linger is on):
+#   cp lune-hhll.service ~/.config/systemd/user/ && systemctl --user daemon-reload \
+#     && systemctl --user enable --now lune-hhll.service
+[Unit]
+Description=Lune HH/LL paper trader (ticks from PostgreSQL)
+
+[Service]
+WorkingDirectory=/home/ubuntu/Documents/Lune
+ExecStart=/home/ubuntu/Documents/Lune/venv/bin/python -u /home/ubuntu/Documents/Lune/hhll_tick.py live
+Environment=PYTHONUNBUFFERED=1
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

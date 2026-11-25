@@ -1,0 +1,56 @@
+{
+ "thr_cost": 10,
+ "chop_k": 0.0,
+ "lock_at": 0.0,
+ "lock_trail": 0.75,
+ "stop": 0.0,
+ "order": "market",
+ "limit_wait": 10.0,
+ "last_entry": "15:00",
+ "lots": 1,
+ "target": 0.0,
+ "leg_k": 0.0,
+ "exit_on": "pivot",
+ "exit_wide": 0.0,
+ "max_hold_s": 0.0,
+ "fast_cost": 0.0,
+ "leg_cost": 0.0,
+ "index_pivots": [
+  [
+   "BANKNIFTY",
+   10,
+   55.0,
+   187.0
+  ],
+  [
+   "FINNIFTY",
+   10,
+   38.0,
+   84.0
+  ],
+  [
+   "MIDCPNIFTY",
+   10,
+   12.0,
+   26.0
+  ],
+  [
+   "NIFTY",
+   10,
+   19.0,
+   46.0
+  ],
+  [
+   "NIFTYNXT50",
+   10,
+   20.0,
+   60.0
+  ],
+  [
+   "SENSEX",
+   10,
+   22.0,
+   50.0
+  ]
+ ]
+}
